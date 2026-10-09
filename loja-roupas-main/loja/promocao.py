@@ -1,3 +1,11 @@
+#Etapas 7 e 8: promoções com contrato (Aula 8).
+from abc import ABC, abstractmethod
+
+class Promocao(ABC):
+#Contrato: aplicar devolve o valor com desconto.
+    @abstractmethod
+    def aplicar(self, subtotal):
+
 class SemPromocao:
     def aplicar(self, subtotal):
         return subtotal
@@ -19,3 +27,16 @@ class Cupom:
 
     def aplicar(self, subtotal):
         return max(subtotal - self.valor, 0)
+
+class SemPromocao(Promocao):
+    def aplicar(self, subtotal):
+        return subtotal
+
+class Percentual(Promocao):
+    def __init__(self, pct):
+        if not 0 <= pct <= 100:
+            raise ValueError("percentual deve estar entre 0 e 100")
+        self.pct = pct
+
+    def aplicar(self, subtotal):
+        return subtotal * (100 - self.pct) / 100
